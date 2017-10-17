@@ -1,0 +1,9 @@
+[submodule "api"]
+	path = api
+	url = git@github.com:cualbondi/api.git
+[submodule "postgres"]
+	path = postgres
+	url = git@github.com:cualbondi/postgres.git
+[submodule "web"]
+	path = web
+	url = git@github.com:cualbondi/web.git
