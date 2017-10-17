@@ -5,7 +5,7 @@ services:
     api:
         build: ./api
         ports:
-            - 8000:8000
+            - 8001:8000
         depends_on:
             - db
             - cache
@@ -16,6 +16,21 @@ services:
         volumes:
             - ./volume_uwsgispooler:/var/uwsgispooler
             - ./volume_uwsgilog:/var/log/uwsgi/
+
+    web:
+        build: ./web
+        ports:
+            - 8000:8000
+        depends_on:
+            - db
+            - cache
+        restart: unless-stopped
+        env_file: .env
+        environment:
+            DB_HOST: db
+        volumes:
+            - ./volume_uwsgispooler_web:/var/uwsgispooler
+            - ./volume_uwsgilog_web:/var/log/uwsgi/
 
     db:
         build: ./postgres
