@@ -13,14 +13,18 @@ Para poner en marcha, instalar primero `docker-compose` y luego ejecutar
 
 1. Levantar dump de base de datos:
 
-    cat dump.sql | docker exec -i cualbondi_db_1 sh -c "pg_restore -C -Fc -j8 | psql -U geocualbondiuser geocualbondidb"
+`cat dump.sql | docker exec -i cualbondi_db_1 sh -c "pg_restore -C -Fc -j8 | psql -U geocualbondiuser geocualbondidb"`
 
 2. Correr migraciones de django
 
-    docker-compose exec api python manage.py migrate
+`docker-compose exec api python manage.py migrate`
 
-Debería estar todo funcionando en `localhost:8000`
+## Usando docker-compose.dev.yml
 
-Para usar un dump de la base de datos
+Agregar en `/etc/hosts`
 
-    cat dump.sql | docker exec -i cualbondi_db_1 sh -c "pg_restore -C -Fc -j8 | psql -U postgres"
+```
+127.0.0.1   api.localhost
+```
+
+De esta forma la API funcionará en http://api.localhost y la web en http://localhost.
