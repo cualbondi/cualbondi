@@ -19,6 +19,7 @@ services:
 
     web:
         build: ./web
+        env_file: .env
         environment:
             - DB_HOST=db
             - DEBUG=True
