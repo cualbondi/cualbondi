@@ -1,0 +1,78 @@
+version: '3.2'
+
+services:
+
+    api:
+        build: ./api
+        depends_on:
+            - db
+            - cache
+        env_file: .env
+        restart: always
+        environment:
+            - DB_HOST=db
+            - VIRTUAL_HOST=api.cualbondi.com.ar
+            - LETSENCRYPT_HOST=api.cualbondi.com.ar
+            - LETSENCRYPT_EMAIL=cualbondi@cualbondi.com.ar
+            - VIRTUAL_PORT=8000
+            - DEBUG=False
+        volumes:
+            - ./volume_api_uwsgispooler:/var/uwsgispooler
+            - ./volume_api_uwsgilog:/var/log/uwsgi/
+
+    web:
+        build: ./web
+        depends_on:
+            - db
+            - cache
+        env_file: .env
+        restart: always
+        environment:
+            - DB_HOST=db
+            - LETSENCRYPT_HOST=cualbondi.com.ar
+            - LETSENCRYPT_EMAIL=cualbondi@cualbondi.com.ar
+            - VIRTUAL_HOST=cualbondi.com.ar
+            - VIRTUAL_PORT=8000
+            - DEBUG=False
+        volumes:
+            - ./volume_web_uwsgispooler:/var/uwsgispooler
+            - ./volume_web_uwsgilog:/var/log/uwsgi/
+
+    db:
+        build: ./postgres
+        restart: always
+        env_file: .env
+        volumes:
+            - ./volume_db_data:/var/lib/postgresql/data
+
+    cache:
+        image: memcached:alpine
+        restart: always
+
+    proxy:
+        image: jwilder/nginx-proxy
+        ports:
+            - 80:80
+            - 443:443
+        restart: always
+        volumes:
+            - /var/run/docker.sock:/tmp/docker.sock:ro
+            - ./nginx/proxy.conf:/etc/nginx/conf.d/my_proxy.conf:ro
+            - ./nginx/vhost.d:/etc/nginx/vhost.d:ro
+            - ./nginx/logs:/var/log/nginx
+            - ./nginx/html:/usr/share/nginx/html
+            - ./nginx/certificates:/etc/nginx/certs:ro
+        labels:
+            - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy
+        environment:
+            - DEFAULT_HOST=cualbondi.com.ar
+
+    # https://github.com/JrCs/docker-letsencrypt-nginx-proxy-companion
+    encrypt:
+        image: jrcs/letsencrypt-nginx-proxy-companion
+        restart: on-failure
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock:ro
+            - ./nginx/certificates:/etc/nginx/certs:rw
+            - ./nginx/vhost.d:/etc/nginx/vhost.d:rw
+            - ./nginx/html:/usr/share/nginx/html

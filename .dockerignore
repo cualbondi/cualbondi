@@ -1,6 +1,8 @@
 /volume_*
 .env
 *.sql
+*.yml
+.git
 nginx/certificates
 nginx/html
 nginx/logs
