@@ -10,12 +10,11 @@ services:
         env_file: .env
         restart: always
         environment:
-            - DB_HOST=db
-            - VIRTUAL_HOST=api.cualbondi.com.ar
-            - LETSENCRYPT_HOST=api.cualbondi.com.ar
-            - LETSENCRYPT_EMAIL=cualbondi@cualbondi.com.ar
-            - VIRTUAL_PORT=8000
-            - DEBUG=False
+            DB_HOST: db
+            VIRTUAL_PORT: 8000
+            VIRTUAL_HOST: api.cualbondi.com.ar
+            LETSENCRYPT_HOST: api.cualbondi.com.ar
+            LETSENCRYPT_EMAIL: cualbondi@cualbondi.com.ar
         volumes:
             - ./volume_api_uwsgispooler:/var/uwsgispooler
             - ./volume_api_uwsgilog:/var/log/uwsgi/
@@ -28,22 +27,23 @@ services:
         env_file: .env
         restart: always
         environment:
-            - DB_HOST=db
-            - LETSENCRYPT_HOST=cualbondi.com.ar
-            - LETSENCRYPT_EMAIL=cualbondi@cualbondi.com.ar
-            - VIRTUAL_HOST=cualbondi.com.ar
-            - VIRTUAL_PORT=8000
-            - DEBUG=False
+            DB_HOST: db
+            VIRTUAL_PORT: 8000
+            VIRTUAL_HOST: cualbondi.com.ar
+            LETSENCRYPT_HOST: cualbondi.com.ar
+            LETSENCRYPT_EMAIL: cualbondi@cualbondi.com.ar
         volumes:
             - ./volume_web_uwsgispooler:/var/uwsgispooler
             - ./volume_web_uwsgilog:/var/log/uwsgi/
+            - ./volume_web_static:/static
+            - ./volume_web_media:/media
 
     db:
         build: ./postgres
         restart: always
         env_file: .env
         volumes:
-            - ./volume_db_data:/var/lib/postgresql/data
+            - ./volume_db:/var/lib/postgresql/data
 
     cache:
         image: memcached:alpine
@@ -57,22 +57,85 @@ services:
         restart: always
         volumes:
             - /var/run/docker.sock:/tmp/docker.sock:ro
-            - ./nginx/proxy.conf:/etc/nginx/conf.d/my_proxy.conf:ro
             - ./nginx/vhost.d:/etc/nginx/vhost.d:ro
-            - ./nginx/logs:/var/log/nginx
-            - ./nginx/html:/usr/share/nginx/html
-            - ./nginx/certificates:/etc/nginx/certs:ro
+            - ./volume_nginx/logs:/var/log/nginx
+            - ./volume_nginx/html:/usr/share/nginx/html
+            - ./volume_nginx/certificates:/etc/nginx/certs:ro
+            - ./volume_web_static:/www/static
+            - ./volume_web_media:/www/media
         labels:
             - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy
         environment:
-            - DEFAULT_HOST=cualbondi.com.ar
+            DEFAULT_HOST: cualbondi.com.ar
 
     # https://github.com/JrCs/docker-letsencrypt-nginx-proxy-companion
-    encrypt:
+    letsencrypt:
         image: jrcs/letsencrypt-nginx-proxy-companion
         restart: on-failure
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock:ro
-            - ./nginx/certificates:/etc/nginx/certs:rw
-            - ./nginx/vhost.d:/etc/nginx/vhost.d:rw
-            - ./nginx/html:/usr/share/nginx/html
+            - ./volume_nginx/certificates:/etc/nginx/certs:rw
+            - ./volume_nginx/vhost.d:/etc/nginx/vhost.d:rw
+            - ./volume_nginx/html:/usr/share/nginx/html
+
+
+
+
+
+####### SENTRY ###########
+
+    sentry_redis:
+        image: redis
+
+    sentry_postgres:
+        image: postgres
+        environment:
+            POSTGRES_USER: sentry
+            POSTGRES_PASSWORD: sentry
+            POSTGRES_DBNAME: sentry
+            POSTGRES_DBUSER: sentry
+            POSTGRES_DBPASS: sentry
+        volumes:
+            - ./volume_sentry_postgres:/var/lib/postgresql/data
+
+    sentry_sentry:
+        image: sentry
+        links:
+            - sentry_redis
+            - sentry_postgres
+        environment:
+            SENTRY_SECRET_KEY: '3KOZCsauzjLAs8B4HjkY'
+            SENTRY_POSTGRES_HOST: sentry_postgres
+            SENTRY_DB_USER: sentry
+            SENTRY_DB_PASSWORD: sentry
+            SENTRY_REDIS_HOST: sentry_redis
+            LETSENCRYPT_HOST: sentry.cualbondi.com.ar
+            LETSENCRYPT_EMAIL: cualbondi@cualbondi.com.ar
+            VIRTUAL_HOST: sentry.cualbondi.com.ar
+            VIRTUAL_PORT: 9000
+
+    sentry_cron:
+        image: sentry
+        links:
+            - sentry_redis
+            - sentry_postgres
+        command: "sentry run cron"
+        environment:
+            SENTRY_SECRET_KEY: '3KOZCsauzjLAs8B4HjkY'
+            SENTRY_POSTGRES_HOST: sentry_postgres
+            SENTRY_DB_USER: sentry
+            SENTRY_DB_PASSWORD: sentry
+            SENTRY_REDIS_HOST: sentry_redis
+
+    sentry_worker:
+        image: sentry
+        links:
+            - sentry_redis
+            - sentry_postgres
+        command: "sentry run worker"
+        environment:
+          SENTRY_SECRET_KEY: '3KOZCsauzjLAs8B4HjkY'
+          SENTRY_POSTGRES_HOST: sentry_postgres
+          SENTRY_DB_USER: sentry
+          SENTRY_DB_PASSWORD: sentry
+          SENTRY_REDIS_HOST: sentry_redis

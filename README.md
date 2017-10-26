@@ -28,3 +28,9 @@ Agregar en `/etc/hosts`
 ```
 
 De esta forma la API funcionará en http://api.localhost y la web en http://localhost.
+
+
+## Para hacer funcionar sentry en produccion
+
+    docker exec -it sentry_sentry_1 sentry upgrade
+    docker restart sentry_sentry_1

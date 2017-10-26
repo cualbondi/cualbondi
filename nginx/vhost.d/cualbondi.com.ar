@@ -6,6 +6,23 @@ location /.well-known/acme-challenge/ {
     try_files $uri =404;
     break;
 }
+
+location /static {
+  alias /www/static;
+}
+
+location /media {
+  alias /www/media;
+}
+
+location /api {
+  rewrite ^/(.*) //api.cualbondi.com.ar/$1 permanent;
+}
+
+location /api/v2 {
+  rewrite ^/(.*) //api.cualbondi.com.ar/$1 permanent;
+}
+
 ## End of configuration add by letsencrypt container
 # Tunning WEB 
 # docs: https://github.com/jwilder/nginx-proxy#per-virtual_host
