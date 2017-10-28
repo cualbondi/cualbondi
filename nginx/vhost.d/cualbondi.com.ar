@@ -16,11 +16,11 @@ location /media {
 }
 
 location /api {
-  rewrite ^/(.*) //api.cualbondi.com.ar/$1 permanent;
+  return 301 $scheme://api.cualbondi.com.ar$request_uri;
 }
 
 location /api/v2 {
-  rewrite ^/(.*) //api.cualbondi.com.ar/$1 permanent;
+  return 301 $scheme://api.cualbondi.com.ar$request_uri;
 }
 
 ## End of configuration add by letsencrypt container
