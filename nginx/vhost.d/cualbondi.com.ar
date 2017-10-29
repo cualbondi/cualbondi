@@ -8,10 +8,12 @@ location /.well-known/acme-challenge/ {
 }
 
 location /static {
+  expires 1h;
   alias /www/static;
 }
 
 location /media {
+  expires 1h;
   alias /www/media;
 }
 
