@@ -7,57 +7,56 @@ services:
         depends_on:
             - db
             - cache
-        env_file: .env
+        restart: unless-stopped
+        env_file: .env.local
         environment:
             - DB_HOST=db
-            - VIRTUAL_HOST=api.cualbondi.local
-            - VIRTUAL_PORT=8000
-            - DEBUG=True
+            - MEMCACHED_HOST=cache
         volumes:
             - api_uwsgispooler_dev:/var/uwsgispooler
             - api_uwsgilog_dev:/var/log/uwsgi/
+            - ./api:/app
+        ports:
+            - 8081:8000
+        command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
 
     web:
         build: ./web
-        env_file: .env
+        depends_on:
+            - db
+            - cache
+        restart: unless-stopped
+        env_file: .env.local
         environment:
             - DB_HOST=db
+            - MEMCACHED_HOST=cache
             - DEBUG=True
-            - VIRTUAL_HOST=cualbondi.local
-            - VIRTUAL_PORT=8000
             - CUALBONDI_ENV=development
+            - API_URL=http://localhost:8081/
         volumes:
             - web_uwsgispooler_dev:/var/uwsgispooler
             - web_uwsgilog_dev:/var/log/uwsgi/
             - web_static:/static
             - web_media:/media
+            - ./web:/app
+        ports:
+            - 8080:8000
+        command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
 
     db:
         build: ./postgres
         restart: unless-stopped
-        env_file: .env
+        env_file: .env.local
         volumes:
             - db_dev:/var/lib/postgresql/data
+        #add this if you need to connect to psql from outside
+        #ports:
+        #    - "5432:5432"
 
     cache:
         image: memcached:alpine
         restart: unless-stopped
 
-    proxy:
-        image: jwilder/nginx-proxy
-        ports:
-            - 80:80
-            - 443:443
-        restart: unless-stopped
-        volumes:
-            - /var/run/docker.sock:/tmp/docker.sock:ro
-            - ./nginx/proxy.conf:/etc/nginx/conf.d/my_proxy.conf:ro
-            - ./nginx/vhost.d:/etc/nginx/vhost.d:ro
-            - web_static:/www/static
-            - web_media:/www/media
-        environment:
-            - DEFAULT_HOST=cualbondi.local
-            - VIRTUAL_HOST=static.cualbondi.local,media.cualbondi.local
 
 volumes:
     db_dev:
