@@ -5,3 +5,6 @@ nginx/certificates
 nginx/html
 nginx/logs
 .env.example
+api
+web
+postgres
