@@ -10,7 +10,6 @@ services:
         restart: unless-stopped
         env_file: .env.local
         environment:
-            - DB_HOST=db
             - MEMCACHED_HOST=cache
         volumes:
             - api_uwsgispooler_dev:/var/uwsgispooler
@@ -20,6 +19,21 @@ services:
             - 8081:8000
         command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
 
+    apiv3:
+        build:
+            context: ./apiv3
+            dockerfile: docker/local/Dockerfile
+        depends_on:
+            - db
+            - cache
+        restart: unless-stopped
+        env_file: .env.local
+        volumes:
+            - ./apiv3:/app
+        ports:
+            - 8082:8000
+        command: /start.sh
+
     web:
         build: ./web
         depends_on:
@@ -28,7 +42,6 @@ services:
         restart: unless-stopped
         env_file: .env.local
         environment:
-            - DB_HOST=db
             - MEMCACHED_HOST=cache
             - API_URL=http://localhost:8081/
         volumes:
@@ -48,8 +61,8 @@ services:
         volumes:
             - db_dev:/var/lib/postgresql/data
         #add this if you need to connect to psql from outside
-        #ports:
-        #    - "5432:5432"
+        ports:
+           - "5432:5432"
 
     cache:
         image: memcached:alpine
