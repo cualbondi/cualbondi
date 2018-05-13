@@ -3,6 +3,7 @@
 .vscode
 
 /volume_*
+venv/
 .env
 *.sql
 nginx/certificates
@@ -13,4 +14,3 @@ api
 web
 postgres
 apiv3
-
