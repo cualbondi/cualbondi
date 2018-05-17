@@ -26,6 +26,9 @@ location /api/v2 {
   return 301 $scheme://api.cualbondi.com.ar$request_uri;
 }
 
+location /api/v3 {
+  return 301 $scheme://api3.cualbondi.com.ar$request_uri;
+}
 
 ## this is for legacy ionic mobile app
 location /osm_proxy/ {

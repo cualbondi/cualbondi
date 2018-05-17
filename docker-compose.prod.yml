@@ -10,7 +10,6 @@ services:
         env_file: .env
         restart: always
         environment:
-            DB_HOST: db
             VIRTUAL_PORT: 8000
             VIRTUAL_HOST: api.cualbondi.com.ar
             LETSENCRYPT_HOST: api.cualbondi.com.ar
@@ -28,9 +27,11 @@ services:
             - cache
         restart: always
         environment:
-            DB_HOST: db
-            VIRTUAL_PORT: 5000
-            # VIRTUAL_HOST: api.cualbondi.com.ar
+            DJANGO_SETTINGS_MODULE: config.settings.production
+            VIRTUAL_PORT: 8000
+            VIRTUAL_HOST: api3.cualbondi.com.ar
+            LETSENCRYPT_HOST: api3.cualbondi.com.ar
+            LETSENCRYPT_EMAIL: cualbondi@cualbondi.com.ar
         env_file: .env
         command: /gunicorn.sh
 
@@ -42,7 +43,6 @@ services:
         env_file: .env
         restart: always
         environment:
-            DB_HOST: db
             VIRTUAL_PORT: 8000
             VIRTUAL_HOST: cualbondi.com.ar
             LETSENCRYPT_HOST: cualbondi.com.ar
@@ -111,8 +111,6 @@ services:
             - ./volume_nginx/vhost.d:/etc/nginx/vhost.d:rw
             - ./volume_nginx/html:/usr/share/nginx/html
 
-    # redis:
-    #     image: redis:3.2
 
 
 

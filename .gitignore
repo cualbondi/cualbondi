@@ -10,11 +10,3 @@ nginx/certificates
 nginx/html
 nginx/logs
 .env.example
-# virtualenv
-venv/
-# submodules
-api
-web
-postgres
-apiv3
-web-buscador

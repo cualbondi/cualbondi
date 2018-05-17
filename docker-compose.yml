@@ -9,8 +9,6 @@ services:
             - cache
         restart: unless-stopped
         env_file: .env.local
-        environment:
-            - MEMCACHED_HOST=cache
         volumes:
             - api_uwsgispooler_dev:/var/uwsgispooler
             - api_uwsgilog_dev:/var/log/uwsgi/
@@ -41,9 +39,6 @@ services:
             - cache
         restart: unless-stopped
         env_file: .env.local
-        environment:
-            - MEMCACHED_HOST=cache
-            - API_URL=http://localhost:8081/
         volumes:
             - web_uwsgispooler_dev:/var/uwsgispooler
             - web_uwsgilog_dev:/var/log/uwsgi/
