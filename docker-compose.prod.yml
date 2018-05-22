@@ -17,6 +17,8 @@ services:
         volumes:
             - ./volume_api_uwsgispooler:/var/uwsgispooler
             - ./volume_api_uwsgilog:/var/log/uwsgi/
+            - ./volume_apiv3_media:/apiv3_media
+            - ./volume_apiv3_static:/apiv3_static
 
     apiv3:
         build:
@@ -35,6 +37,7 @@ services:
         env_file: .env
         volumes:
             - ./volume_apiv3_media:/media
+            - ./volume_apiv3_static:/app/staticfiles
         command: /gunicorn.sh
 
     web-buscador:
