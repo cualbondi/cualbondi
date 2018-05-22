@@ -25,22 +25,6 @@ location /media {
   alias /apiv3_media;
 }
 
-location /static {
-  proxy_pass http://api3.cualbondi.com.ar$request_uri;
-  proxy_set_header Host $host;
-  proxy_set_header X-Real-IP $remote_addr;
-  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-  proxy_set_header X-Forwarded-Proto $scheme;
-}
-
-location /media {
-  proxy_pass http://api3.cualbondi.com.ar$request_uri;
-  proxy_set_header Host $host;
-  proxy_set_header X-Real-IP $remote_addr;
-  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-  proxy_set_header X-Forwarded-Proto $scheme;
-}
-
 ## End of configuration add by letsencrypt container
 # Tunning API 
 # docs: https://github.com/jwilder/nginx-proxy#per-virtual_host
