@@ -10,11 +10,10 @@ services:
         env_file: .env
         restart: always
         environment:
-            DB_HOST: db
             VIRTUAL_PORT: 8000
             VIRTUAL_HOST: api.cualbondi.com.ar
             LETSENCRYPT_HOST: api.cualbondi.com.ar
-            LETSENCRYPT_EMAIL: cualbondi@cualbondi.com.ar
+            LETSENCRYPT_EMAIL: cualbondi@gmail.com
         volumes:
             - ./volume_api_uwsgispooler:/var/uwsgispooler
             - ./volume_api_uwsgilog:/var/log/uwsgi/
@@ -27,11 +26,10 @@ services:
         env_file: .env
         restart: always
         environment:
-            DB_HOST: db
             VIRTUAL_PORT: 8000
             VIRTUAL_HOST: cualbondi.com.ar
             LETSENCRYPT_HOST: cualbondi.com.ar
-            LETSENCRYPT_EMAIL: cualbondi@cualbondi.com.ar
+            LETSENCRYPT_EMAIL: cualbondi@gmail.com
         volumes:
             - ./volume_web_uwsgispooler:/var/uwsgispooler
             - ./volume_web_uwsgilog:/var/log/uwsgi/
@@ -61,12 +59,12 @@ services:
             - 443:443
         restart: always
         volumes:
-            - /var/run/docker.sock:/tmp/docker.sock:ro
-            - ./nginx/vhost.d:/etc/nginx/vhost.d:ro
-            - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+            - /var/run/docker.sock:/tmp/docker.sock
+            - ./nginx/vhost.d:/etc/nginx/vhost.d
+            - ./nginx/nginx.conf:/etc/nginx/nginx.conf
             - ./volume_nginx/logs:/var/log/nginx
             - ./volume_nginx/html:/usr/share/nginx/html
-            - ./volume_nginx/certificates:/etc/nginx/certs:ro
+            - ./volume_nginx/certificates:/etc/nginx/certs
             - ./volume_web_static:/www/static
             - ./volume_web_media:/www/media
         labels:
@@ -91,10 +89,12 @@ services:
         image: jrcs/letsencrypt-nginx-proxy-companion
         restart: on-failure
         volumes:
-            - /var/run/docker.sock:/var/run/docker.sock:ro
-            - ./volume_nginx/certificates:/etc/nginx/certs:rw
-            - ./volume_nginx/vhost.d:/etc/nginx/vhost.d:rw
+            - /var/run/docker.sock:/var/run/docker.sock
+            - ./volume_nginx/certificates:/etc/nginx/certs
+            - ./volume_nginx/vhost.d:/etc/nginx/vhost.d
             - ./volume_nginx/html:/usr/share/nginx/html
+        # environment:
+        #     DEBUG: "true"
 
 
 

@@ -7,3 +7,6 @@
 [submodule "web"]
 	path = web
 	url = git@github.com:cualbondi/web.git
+[submodule "apiv3"]
+	path = apiv3
+	url = git@github.com:cualbondi/apiv3.git
