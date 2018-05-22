@@ -7,6 +7,17 @@ location /.well-known/acme-challenge/ {
     try_files $uri =404;
     break;
 }
+
+location /static {
+  expires 1h;
+  alias /app/staticfiles;
+}
+
+location /media {
+  expires 1h;
+  alias /media;
+}
+
 ## End of configuration add by letsencrypt container
 # Tunning API 
 # docs: https://github.com/jwilder/nginx-proxy#per-virtual_host

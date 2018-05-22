@@ -33,6 +33,8 @@ services:
             LETSENCRYPT_HOST: api3.cualbondi.com.ar
             LETSENCRYPT_EMAIL: cualbondi@cualbondi.com.ar
         env_file: .env
+        volumes:
+            - ./volume_apiv3_media:/media
         command: /gunicorn.sh
 
     web:
