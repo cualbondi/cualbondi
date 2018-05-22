@@ -38,3 +38,7 @@ De esta forma la API funcionará en http://api.localhost y la web en http://loca
 
     docker exec -it sentry_sentry_1 sentry upgrade
     docker restart sentry_sentry_1
+
+## Update en produccion
+
+  cd cualbondi && git pull && docker-compose -f docker-compose.prod.yml pull && docker-compose -f docker-compose.prod.yml up --build --force-recreate -d
