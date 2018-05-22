@@ -10,3 +10,6 @@
 [submodule "apiv3"]
 	path = apiv3
 	url = git@github.com:cualbondi/apiv3.git
+[submodule "web-buscador"]
+	path = web-buscador
+	url = git@github.com:cualbondi/web-buscador.git
