@@ -37,6 +37,13 @@ services:
             - ./volume_apiv3_media:/media
         command: /gunicorn.sh
 
+    web-buscador:
+      image: node:9
+      command: bash -c "yarn && yarn build"
+      working_dir: /src
+      volumes:
+        - "./web-buscador:/src"
+
     web:
         build: ./web
         depends_on:
@@ -86,6 +93,7 @@ services:
             - ./volume_nginx/certificates:/etc/nginx/certs
             - ./volume_web_static:/www/static
             - ./volume_web_media:/www/media
+            - ./web-buscador/dist:/www/web-buscador_dist
         labels:
             - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy
         environment:
