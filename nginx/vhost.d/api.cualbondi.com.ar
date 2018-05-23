@@ -9,7 +9,7 @@ location /.well-known/acme-challenge/ {
 }
 
 location /v3/ {
-  proxy_pass https://api3.cualbondi.com.ar/;
+  proxy_pass http://api3.cualbondi.com.ar/;
   proxy_set_header Host $host;
   proxy_set_header X-Real-IP $remote_addr;
   proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -17,11 +17,11 @@ location /v3/ {
 }
 location /static {
   expires 1h;
-  alias /apiv3_static;
+  alias /www/apiv3_static;
 }
 location /media {
   expires 1h;
-  alias /apiv3_media;
+  alias /www/apiv3_media;
 }
 
 ## End of configuration add by letsencrypt container

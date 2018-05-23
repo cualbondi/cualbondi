@@ -17,8 +17,6 @@ services:
         volumes:
             - ./volume_api_uwsgispooler:/var/uwsgispooler
             - ./volume_api_uwsgilog:/var/log/uwsgi/
-            - ./volume_apiv3_media:/apiv3_media
-            - ./volume_apiv3_static:/apiv3_static
 
     apiv3:
         build:
@@ -96,6 +94,8 @@ services:
             - ./volume_nginx/certificates:/etc/nginx/certs
             - ./volume_web_static:/www/static
             - ./volume_web_media:/www/media
+            - ./volume_apiv3_media:/www/apiv3_media
+            - ./volume_apiv3_static:/www/apiv3_static
             - ./web-buscador/dist:/www/web-buscador_dist
         labels:
             - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy
