@@ -9,8 +9,7 @@ location /.well-known/acme-challenge/ {
 }
 
 location /v3/ {
-  rewrite /v3/(.*) /$1  break;
-  proxy_pass http://api3.cualbondi.com.ar$request_uri;
+  proxy_pass https://api3.cualbondi.com.ar/;
   proxy_set_header Host $host;
   proxy_set_header X-Real-IP $remote_addr;
   proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
