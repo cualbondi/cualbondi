@@ -41,4 +41,4 @@ De esta forma la API funcionará en http://api.localhost y la web en http://loca
 
 ## Update en produccion
 
-  cd cualbondi && git pull && git submodule update && docker-compose -f docker-compose.prod.yml pull && docker-compose -f docker-compose.prod.yml up --build --force-recreate -d && service docker restart
+  cd cualbondi && git pull && git submodule update && docker-compose -f docker-compose.prod.yml pull && docker-compose -f docker-compose.prod.yml up --build --force-recreate -d && service docker restart && docker-compose -f docker-compose.prod.yml restart
