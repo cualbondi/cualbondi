@@ -32,14 +32,14 @@ services:
             - 8082:8000
         command: ["/start.sh"]
 
-    # web-buscador:
-    #     image: node:9
-    #     ports:
-    #         - 8083:8080
-    #     command: bash -c "yarn && yarn serve"
-    #     working_dir: /src
-    #     volumes:
-    #         - "./web-buscador:/src"
+    web-buscador:
+        image: node:9
+        ports:
+            - 8083:8080
+        command: bash -c "yarn && yarn serve"
+        working_dir: /src
+        volumes:
+            - ./web-buscador:/src
 
     web:
         build: ./web
