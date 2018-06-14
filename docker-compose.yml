@@ -33,7 +33,7 @@ services:
         command: ["/start.sh"]
 
     web-buscador:
-        image: node:9
+        image: cypress/base:10
         ports:
             - 8083:8080
         command: bash -c "yarn && yarn serve"
@@ -70,7 +70,6 @@ services:
 
     cache:
         image: memcached:alpine
-        restart: unless-stopped
 
 
 volumes:
