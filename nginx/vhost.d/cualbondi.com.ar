@@ -33,10 +33,10 @@ location /v2 {
   proxy_set_header X-Forwarded-Proto $scheme;
 }  
 
-location /mapa_nuevo {
+location /mapa {
   expires 1m;
-  alias /www/web-buscador_dist/mapa_nuevo;
-  try_files $uri $uri/ /mapa_nuevo/index.html;
+  alias /www/web-buscador_dist/mapa;
+  try_files $uri $uri/ index.html;
 }
 
 ## this is for legacy ionic mobile app
