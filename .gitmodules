@@ -13,3 +13,9 @@
 [submodule "web-buscador"]
 	path = web-buscador
 	url = git@github.com:cualbondi/web-buscador.git
+[submodule "rtapi"]
+	path = rtapi
+	url = git@github.com:cualbondi/rtapi.git
+[submodule "poller"]
+	path = poller
+	url = git@github.com:cualbondi/poller.git

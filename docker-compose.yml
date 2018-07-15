@@ -68,9 +68,30 @@ services:
         ports:
            - "5432:5432"
 
+    rtapi:
+        build: ./rtapi
+        ports:
+            - 8084:8000
+        volumes:
+            - ./rtapi:/app
+        depends_on:
+            - redis
+            - db
+            - poller
+
+    poller:
+        build: ./poller
+        volumes:
+            - ./poller:/app
+        depends_on:
+            - db
+        env_file: .env.local
+
     cache:
         image: memcached:alpine
 
+    redis:
+        image: redis
 
 volumes:
     db_dev:
