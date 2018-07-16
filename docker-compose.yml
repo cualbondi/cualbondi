@@ -79,13 +79,13 @@ services:
     #         - db
     #         - poller
 
-    # poller:
-    #     build: ./poller
-    #     volumes:
-    #         - ./poller:/app
-    #     depends_on:
-    #         - db
-    #     env_file: .env.local
+    poller:
+        build: ./poller
+        volumes:
+            - ./poller:/go/src/app
+        depends_on:
+            - db
+        env_file: .env.local
 
     cache:
         image: memcached:alpine
