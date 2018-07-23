@@ -13,11 +13,11 @@ Para poner en marcha, instalar primero `docker-compose` y luego ejecutar
 
 1. Levantar dump de base de datos:
 
-`cat dump.sql | docker exec -i cualbondi_db_1 sh -c "pg_restore -C -Fc -j8 | psql -U geocualbondiuser geocualbondidb"`
+`gunzip -c dump-20180722_002222.sql.gz | docker exec --user postgres -i cualbondi_db_1 psql geocualbondidb`
 
-opcion 2 para levantar el dump si el anterior no funciona
+opcion 2 (puede no funcionar)
 
-`cat /home/jperelli/dump.sql.gz | gunzip | docker exec -i cualbondi_db_1 psql -U geocualbondiuser geocualbondidb`
+`cat dump.sql | docker exec --user postgres -i cualbondi_db_1 sh -c "pg_restore -C -Fc -j8 | psql geocualbondidb"`
 
 2. Correr migraciones de django
 
@@ -42,3 +42,8 @@ De esta forma la API funcionará en http://api.localhost y la web en http://loca
 ## Update en produccion
 
   cd cualbondi && git pull && git submodule update && docker-compose -f docker-compose.prod.yml pull && docker-compose -f docker-compose.prod.yml up --build --force-recreate -d && service docker restart && docker-compose -f docker-compose.prod.yml restart
+
+## Generar dump de BD
+
+`docker exec -i --user postgres cualbondi_db_1 pg_dump -c -v geocualbondidb | gzip > /tmp/dump-$(date --utc +%Y%m%d_%H%M%SZ)`
+
