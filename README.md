@@ -19,6 +19,11 @@ opcion 2 (puede no funcionar)
 
 `cat dump.sql | docker exec --user postgres -i cualbondi_db_1 sh -c "pg_restore -C -Fc -j8 | psql geocualbondidb"`
 
+opcion 3
+
+`cat dump.sql | docker exec -i cualbondi_db_1 psql -U geocualbondiuser geocualbondidb`
+
+
 2. Correr migraciones de django
 
 `docker-compose exec api python manage.py migrate`
