@@ -6,8 +6,11 @@ Para poner en marcha, instalar primero `docker-compose` y luego ejecutar
 
     git clone --recursive git@github.com:cualbondi/cualbondi.git
     cd cualbondi
-    git submodule foreach git checkout master
     docker-compose up --build
+
+Para updatear los subrepos
+
+    git submodule update --remote
 
 ## Migraciones (2 opciones):
 
