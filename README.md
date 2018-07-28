@@ -30,9 +30,9 @@ opcion 3
 
 2. Correr migraciones de django
 
-`docker-compose exec api python manage.py migrate`
+`docker-compose exec apiv3 python manage.py migrate`
 
-## Usando docker-compose.dev.yml
+## Usando docker-compose.yml (dev environment)
 
 Agregar en `/etc/hosts`
 

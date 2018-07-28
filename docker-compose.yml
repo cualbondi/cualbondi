@@ -2,22 +2,6 @@ version: '3.2'
 
 services:
 
-    # api:
-    #     build: ./api
-    #     depends_on:
-    #         - db
-    #         - cache
-    #     env_file: .env.local
-    #     environment:
-    #         - DJANGO_SETTINGS_MODULE=settings
-    #     volumes:
-    #         - api_uwsgispooler_dev:/var/uwsgispooler
-    #         - api_uwsgilog_dev:/var/log/uwsgi/
-    #         - ./api:/app:cached
-    #     ports:
-    #         - 8081:8000
-    #     command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
-
     apiv3:
         build:
             context: ./apiv3
