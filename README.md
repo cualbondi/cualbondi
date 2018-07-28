@@ -6,6 +6,7 @@ Para poner en marcha, instalar primero `docker-compose` y luego ejecutar
 
     git clone --recursive git@github.com:cualbondi/cualbondi.git
     cd cualbondi
+    git submodule update --init --remote
     docker-compose up --build
 
 Para updatear los subrepos
@@ -54,4 +55,3 @@ De esta forma la API funcionará en http://api.localhost y la web en http://loca
 ## Generar dump de BD
 
 `docker exec -i --user postgres cualbondi_db_1 pg_dump -c -v geocualbondidb | gzip > /tmp/dump-$(date --utc +%Y%m%d_%H%M%SZ)`
-
