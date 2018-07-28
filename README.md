@@ -13,45 +13,41 @@ Para updatear los subrepos
 
     git submodule update --remote
 
-## Migraciones (2 opciones):
+## Base de datos:
 
-1. Levantar dump de base de datos:
+1. Unzip de la DB (solo si el dump es *.gz):
 
-`gunzip -c dump-20180722_002222.sql.gz | docker exec --user postgres -i cualbondi_db_1 psql geocualbondidb`
+    `gunzip -c dump.sql.gz > dump.sql`
 
-opcion 2 (puede no funcionar)
+2. Importar dump en el container postgres
 
-`cat dump.sql | docker exec --user postgres -i cualbondi_db_1 sh -c "pg_restore -C -Fc -j8 | psql geocualbondidb"`
+    2.1 Copiar el dump dentro del container
 
-opcion 3
+    `docker-compose ps | grep db | awk '{print $1":/tmp "}' | xargs docker cp dump.sql`
 
-`cat dump.sql | docker exec -i cualbondi_db_1 psql -U geocualbondiuser geocualbondidb`
+    2.2 Ejecutar el importer
 
+    `docker-compose exec db bash import-sql.sh`
 
-2. Correr migraciones de django
+    2.3 Remover el archivo dump del container (Opcional pero recomendando)
 
-`docker-compose exec apiv3 python manage.py migrate`
+    `docker-compose exec db rm /tmp/dump.sql`
 
-## Usando docker-compose.yml (dev environment)
+3. Correr migraciones de django
 
-Agregar en `/etc/hosts`
+    `docker-compose exec apiv3 python manage.py migrate`
 
-```
-127.0.0.1   api.localhost
-```
-
-De esta forma la API funcionará en http://api.localhost y la web en http://localhost.
-
-
-## Para hacer funcionar sentry en produccion
+## Para hacer funcionar sentry (Sólo production environments)
 
     docker exec -it sentry_sentry_1 sentry upgrade
     docker restart sentry_sentry_1
 
 ## Update en produccion
 
+```
   cd cualbondi && git pull && git submodule update && docker-compose -f docker-compose.prod.yml pull && docker-compose -f docker-compose.prod.yml up --build --force-recreate -d && service docker restart && docker-compose -f docker-compose.prod.yml restart
+```
 
 ## Generar dump de BD
 
-`docker exec -i --user postgres cualbondi_db_1 pg_dump -c -v geocualbondidb | gzip > /tmp/dump-$(date --utc +%Y%m%d_%H%M%SZ)`
+`docker-compose exec --user postgres db bash export-sql.sh | gzip > dump-$(date --utc +%Y%m%d_%H%M%SZ).sql.gz`
