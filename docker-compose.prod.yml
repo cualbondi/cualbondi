@@ -2,22 +2,6 @@ version: '3.2'
 
 services:
 
-    api:
-        build: ./api
-        depends_on:
-            - db
-            - cache
-        env_file: .env
-        restart: always
-        environment:
-            VIRTUAL_PORT: 8000
-            VIRTUAL_HOST: api.cualbondi.com.ar
-            LETSENCRYPT_HOST: api.cualbondi.com.ar
-            LETSENCRYPT_EMAIL: cualbondi@gmail.com
-        volumes:
-            - ./volume_api_uwsgispooler:/var/uwsgispooler
-            - ./volume_api_uwsgilog:/var/log/uwsgi/
-
     apiv3:
         build:
             context: ./apiv3
