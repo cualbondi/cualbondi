@@ -16,15 +16,13 @@ services:
             - 8082:8000
         command: ["/start.sh"]
 
-    # web-buscador:
-    #     image: cypress/base:10
-    #     ports:
-    #         - 8083:8080
-    #     command: bash -c "yarn && yarn serve"
-    #     working_dir: /src
-    #     volumes:
-    #         - ./web-buscador:/src
-
+    web-buscador:
+        build: ./web-buscador
+        ports:
+            - 8083:8080
+        volumes:
+            - ./web-buscador/src:/var/www/src
+        
     web:
         build: ./web
         depends_on:
@@ -52,16 +50,18 @@ services:
         ports:
            - "5432:5432"
 
-    # rtapi:
-    #     build: ./rtapi
-    #     ports:
-    #         - 8084:8000
-    #     volumes:
-    #         - ./rtapi:/app
-    #     depends_on:
-    #         - redis
-    #         - db
-    #         - poller
+    rtapi:
+        build: ./rtapi
+        env_file: .env.local
+        ports:
+            - 8084:8000
+        volumes:
+            - ./rtapi/src:/app
+        depends_on:
+            - redis
+            - db
+            - poller
+        command: ["python", "server.py"]
 
     poller:
         build: ./poller
@@ -74,8 +74,8 @@ services:
     cache:
         image: memcached:alpine
 
-    # redis:
-    #     image: redis
+    redis:
+        image: redis
 
 volumes:
     db_dev:
