@@ -20,7 +20,9 @@ services:
         build: ./web-buscador
         ports:
             - 8083:8080
-
+        volumes:
+            - ./web-buscador/src:/var/www/src
+        
     web:
         build: ./web
         depends_on:
