@@ -13,12 +13,12 @@ services:
         environment:
             DJANGO_SETTINGS_MODULE: config.settings.production
             VIRTUAL_PORT: 8000
-            VIRTUAL_HOST: cualbondi.com.ar,api3.cualbondi.com.ar
-            LETSENCRYPT_HOST: cualbondi.com.ar,api3.cualbondi.com.ar
+            VIRTUAL_HOST: cualbondi.com.ar,api3.cualbondi.com.ar,api.cualbondi.com.ar
+            LETSENCRYPT_HOST: cualbondi.com.ar,api3.cualbondi.com.ar,api.cualbondi.com.ar
             LETSENCRYPT_EMAIL: cualbondi@cualbondi.com.ar
         env_file: .env
         volumes:
-            - ./volume_web_media:/media
+            - ./volume_web_media:/app/apps/media
             - ./volume_web_static:/app/staticfiles
         command: /gunicorn.sh
 
@@ -28,8 +28,8 @@ services:
       cap_add:
         - SYS_ADMIN
       #command: tail -f /dev/null
-      command: bash -c "npm install && npm run build"
-      user: node
+      command: bash -c "yarn && yarn build"
+      user: root
       working_dir: /src
       volumes:
         - "./web-buscador:/src"

@@ -36,7 +36,7 @@ location /v2 {
 location /mapa {
   expires 1m;
   alias /www/web-buscador_dist/mapa;
-  try_files $uri $uri/ index.html;
+  try_files $uri $uri/ /index.html =404;
 }
 
 ## this is for legacy ionic mobile app
