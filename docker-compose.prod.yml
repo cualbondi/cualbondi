@@ -2,9 +2,9 @@ version: '3.2'
 
 services:
 
-    apiv3:
+    web:
         build:
-            context: ./apiv3
+            context: ./web
             dockerfile: docker/production/Dockerfile
         depends_on:
             - db
@@ -13,13 +13,13 @@ services:
         environment:
             DJANGO_SETTINGS_MODULE: config.settings.production
             VIRTUAL_PORT: 8000
-            VIRTUAL_HOST: api3.cualbondi.com.ar
-            LETSENCRYPT_HOST: api3.cualbondi.com.ar
+            VIRTUAL_HOST: cualbondi.com.ar,api3.cualbondi.com.ar
+            LETSENCRYPT_HOST: cualbondi.com.ar,api3.cualbondi.com.ar
             LETSENCRYPT_EMAIL: cualbondi@cualbondi.com.ar
         env_file: .env
         volumes:
-            - ./volume_apiv3_media:/media
-            - ./volume_apiv3_static:/app/staticfiles
+            - ./volume_web_media:/media
+            - ./volume_web_static:/app/staticfiles
         command: /gunicorn.sh
 
     web-buscador:
@@ -33,24 +33,6 @@ services:
       working_dir: /src
       volumes:
         - "./web-buscador:/src"
-
-    web:
-        build: ./web
-        depends_on:
-            - db
-            - cache
-        env_file: .env
-        restart: always
-        environment:
-            VIRTUAL_PORT: 8000
-            VIRTUAL_HOST: cualbondi.com.ar
-            LETSENCRYPT_HOST: cualbondi.com.ar
-            LETSENCRYPT_EMAIL: cualbondi@gmail.com
-        volumes:
-            - ./volume_web_uwsgispooler:/var/uwsgispooler
-            - ./volume_web_uwsgilog:/var/log/uwsgi/
-            - ./volume_web_static:/static
-            - ./volume_web_media:/media
 
     db:
         build: ./postgres
@@ -83,8 +65,6 @@ services:
             - ./volume_nginx/certificates:/etc/nginx/certs
             - ./volume_web_static:/www/static
             - ./volume_web_media:/www/media
-            - ./volume_apiv3_media:/www/apiv3_media
-            - ./volume_apiv3_static:/www/apiv3_static
             - ./web-buscador/dist:/www/web-buscador_dist
         labels:
             - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy

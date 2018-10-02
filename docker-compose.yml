@@ -2,44 +2,31 @@ version: '3.2'
 
 services:
 
-    apiv3:
+    web-buscador:
+        image: cypress/base:10
+        ports:
+            - 8083:8080
+        command: bash -c "yarn && yarn serve"
+        working_dir: /src
+        volumes:
+            - ./web-buscador:/src
+
+    web:
         build:
-            context: ./apiv3
+            context: ./web
             dockerfile: docker/local/Dockerfile
         depends_on:
             - db
             - cache
         env_file: .env.local
         volumes:
-            - ./apiv3:/app:cached
-        ports:
-            - 8082:8000
-        command: ["/start.sh"]
-
-    web-buscador:
-        build: ./web-buscador
-        ports:
-            - 8083:8080
-        volumes:
-            - ./web-buscador/src:/var/www/src
-        
-    web:
-        build: ./web
-        depends_on:
-            - db
-            - cache
-        env_file: .env.local
-        environment:
-            - DJANGO_SETTINGS_MODULE=settings
-        volumes:
-            - web_uwsgispooler_dev:/var/uwsgispooler
-            - web_uwsgilog_dev:/var/log/uwsgi/
-            - web_static:/static
-            - web_media:/media
+            - ./web_static:/static
+            - ./web_media:/media
             - ./web:/app:cached
         ports:
             - 8080:8000
-        command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+        command: ["/start.sh"]
+
 
     db:
         build: ./postgres
@@ -50,26 +37,28 @@ services:
         ports:
            - "5432:5432"
 
-    rtapi:
-        build: ./rtapi
-        env_file: .env.local
-        ports:
-            - 8084:8000
-        volumes:
-            - ./rtapi/src:/app
-        depends_on:
-            - redis
-            - db
-            - poller
-        command: ["python", "server.py"]
+    # rtapi:
+    #     build: ./rtapi
+    #     env_file: .env.local
+    #     ports:
+    #         - 8084:8000
+    #     volumes:
+    #         - ./rtapi/src:/app
+    #     depends_on:
+    #         - redis
+    #         - db
+    #         - poller
+    #     command: ["python", "server.py"]
 
-    poller:
-        build: ./poller
-        volumes:
-            - ./poller:/go/src/app
-        depends_on:
-            - db
-        env_file: .env.local
+#    poller:
+#        build: ./poller
+#        volumes:
+#            - ./poller:/go/src/app
+#        depends_on:
+#            - db
+#            - redis
+#        env_file: .env.local
+#        command: tail -f /dev/null
 
     cache:
         image: memcached:alpine
