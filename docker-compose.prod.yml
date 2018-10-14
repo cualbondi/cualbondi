@@ -22,6 +22,27 @@ services:
             - ./volume_web_static:/app/staticfiles
         command: /gunicorn.sh
 
+    notebooks:
+        build:
+            context: ./web
+            dockerfile: docker/notebooks/Dockerfile
+        depends_on:
+            - db
+            - cache
+        environment:
+            DJANGO_SETTINGS_MODULE: config.settings.production
+            VIRTUAL_PORT: 8888
+            VIRTUAL_HOST: notebooks.cualbondi.com.ar
+            LETSENCRYPT_HOST: notebooks.cualbondi.com.ar
+            LETSENCRYPT_EMAIL: cualbondi@cualbondi.com.ar
+        env_file: .env.notebooks
+        volumes:
+            - ./web/notebooks:/app/notebooks:cached
+        ports:
+            - 8888:8888
+        command: ["/notebooks.sh"]
+
+
     web-buscador:
       image: alekzonder/puppeteer:latest
       shm_size: 1g

@@ -27,6 +27,19 @@ services:
             - 8080:8000
         command: ["/start.sh"]
 
+    notebooks:
+        build:
+            context: ./web
+            dockerfile: docker/notebooks/Dockerfile
+        depends_on:
+            - db
+            - cache
+        env_file: .env.notebooks
+        volumes:
+            - ./web/notebooks:/app/notebooks:cached
+        ports:
+            - 8888:8888
+        command: ["/notebooks.sh"]
 
     db:
         build: ./postgres
