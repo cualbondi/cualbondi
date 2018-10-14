@@ -31,7 +31,7 @@ services:
             - cache
         environment:
             DJANGO_SETTINGS_MODULE: config.settings.production
-            VIRTUAL_PORT: 8888
+            VIRTUAL_PORT: 8000
             VIRTUAL_HOST: notebooks.cualbondi.com.ar
             LETSENCRYPT_HOST: notebooks.cualbondi.com.ar
             LETSENCRYPT_EMAIL: cualbondi@cualbondi.com.ar
