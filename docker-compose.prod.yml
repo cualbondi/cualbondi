@@ -38,6 +38,7 @@ services:
         env_file: .env.notebooks
         volumes:
             - ./web/notebooks:/app/notebooks
+            - ./volume_notebooks_config.json:/home/django/.jupyter/jupyter_notebook_config.json
         command: ["/notebooks.sh"]
 
 
