@@ -37,9 +37,7 @@ services:
             LETSENCRYPT_EMAIL: cualbondi@cualbondi.com.ar
         env_file: .env.notebooks
         volumes:
-            - ./web/notebooks:/app/notebooks:cached
-        ports:
-            - 8888:8888
+            - ./web/notebooks:/app/notebooks
         command: ["/notebooks.sh"]
 
 
