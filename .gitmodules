@@ -2,19 +2,24 @@
 	path = postgres
 	url = git@github.com:cualbondi/postgres.git
 	branch = master
+	ignore = all
 [submodule "web"]
 	path = web
 	url = git@github.com:cualbondi/web.git
 	branch = master
+	ignore = all
 [submodule "web-buscador"]
 	path = web-buscador
 	url = git@github.com:cualbondi/web-buscador.git
 	branch = master
+	ignore = all
 [submodule "rtapi"]
 	path = rtapi
 	url = git@github.com:cualbondi/rtapi.git
 	branch = master
+	ignore = all
 [submodule "poller"]
 	path = poller
 	url = git@github.com:cualbondi/poller.git
 	branch = master
+	ignore = all
