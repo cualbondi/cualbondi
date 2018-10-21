@@ -5,7 +5,10 @@
 /volume_*
 venv/
 .env
+.env.local
+.env.notebooks
 *.sql
+*.sql.gz
 nginx/certificates
 nginx/html
 nginx/logs

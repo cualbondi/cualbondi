@@ -6,10 +6,6 @@
 	path = web
 	url = git@github.com:cualbondi/web.git
 	branch = master
-[submodule "apiv3"]
-	path = apiv3
-	url = git@github.com:cualbondi/apiv3.git
-	branch = master
 [submodule "web-buscador"]
 	path = web-buscador
 	url = git@github.com:cualbondi/web-buscador.git

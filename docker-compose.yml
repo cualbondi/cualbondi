@@ -3,13 +3,11 @@ version: '3.2'
 services:
 
     web-buscador:
-        image: cypress/base:10
+        build: ./web-buscador
         ports:
             - 8083:8080
-        command: bash -c "yarn && yarn serve"
-        working_dir: /src
         volumes:
-            - ./web-buscador:/src
+            - ./web-buscador/src:/app/src
 
     web:
         build:
@@ -20,26 +18,26 @@ services:
             - cache
         env_file: .env.local
         volumes:
-            - ./web_static:/static
-            - ./web_media:/media
+            - web_static:/static
+            - web_media:/media
             - ./web:/app:cached
         ports:
             - 8080:8000
         command: ["/start.sh"]
 
-    notebooks:
-        build:
-            context: ./web
-            dockerfile: docker/notebooks/Dockerfile
-        depends_on:
-            - db
-            - cache
-        env_file: .env.notebooks
-        volumes:
-            - ./web/notebooks:/app/notebooks:cached
-        ports:
-            - 8888:8888
-        command: ["/notebooks.sh"]
+    # notebooks:
+    #     build:
+    #         context: ./web
+    #         dockerfile: docker/notebooks/Dockerfile
+    #     depends_on:
+    #         - db
+    #         - cache
+    #     env_file: .env.notebooks
+    #     volumes:
+    #         - ./web/notebooks:/app/notebooks:cached
+    #     ports:
+    #         - 8888:8000
+    #     command: ["/notebooks.sh"]
 
     db:
         build: ./postgres
