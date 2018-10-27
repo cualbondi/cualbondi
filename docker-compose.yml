@@ -18,8 +18,8 @@ services:
             - cache
         env_file: .env.local
         volumes:
-            - web_static:/static
-            - web_media:/media
+            - web_static:/app/apps/static
+            - web_media:/app/apps/media
             - ./web:/app:cached
         ports:
             - 8080:8000
