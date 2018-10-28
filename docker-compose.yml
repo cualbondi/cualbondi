@@ -1,87 +1,88 @@
-version: '3.2'
+version: "3.2"
 
 services:
+  web-buscador:
+    build: ./web-buscador
+    ports:
+      - 8083:8080
+    volumes:
+      - ./web-buscador/src:/app/src
+    environment:
+      - HOST_PORT=8083
 
-    web-buscador:
-        build: ./web-buscador
-        ports:
-            - 8083:8080
-        volumes:
-            - ./web-buscador/src:/app/src
+  web:
+    build:
+      context: ./web
+      dockerfile: docker/local/Dockerfile
+    depends_on:
+      - db
+      - cache
+    env_file: .env.local
+    volumes:
+      - web_static:/app/apps/static
+      - web_media:/app/apps/media
+      - ./web:/app:cached
+    ports:
+      - 8080:8000
+    command: ["/start.sh"]
 
-    web:
-        build:
-            context: ./web
-            dockerfile: docker/local/Dockerfile
-        depends_on:
-            - db
-            - cache
-        env_file: .env.local
-        volumes:
-            - web_static:/app/apps/static
-            - web_media:/app/apps/media
-            - ./web:/app:cached
-        ports:
-            - 8080:8000
-        command: ["/start.sh"]
+  # notebooks:
+  #     build:
+  #         context: ./web
+  #         dockerfile: docker/notebooks/Dockerfile
+  #     depends_on:
+  #         - db
+  #         - cache
+  #     env_file: .env.notebooks
+  #     volumes:
+  #         - ./web/notebooks:/app/notebooks:cached
+  #     ports:
+  #         - 8888:8000
+  #     command: ["/notebooks.sh"]
 
-    # notebooks:
-    #     build:
-    #         context: ./web
-    #         dockerfile: docker/notebooks/Dockerfile
-    #     depends_on:
-    #         - db
-    #         - cache
-    #     env_file: .env.notebooks
-    #     volumes:
-    #         - ./web/notebooks:/app/notebooks:cached
-    #     ports:
-    #         - 8888:8000
-    #     command: ["/notebooks.sh"]
+  db:
+    build: ./postgres
+    env_file: .env.local
+    volumes:
+      - db_dev:/var/lib/postgresql/data
+    #add this if you need to connect to psql from outside
+    ports:
+      - "5432:5432"
 
-    db:
-        build: ./postgres
-        env_file: .env.local
-        volumes:
-            - db_dev:/var/lib/postgresql/data
-        #add this if you need to connect to psql from outside
-        ports:
-           - "5432:5432"
+  # rtapi:
+  #     build: ./rtapi
+  #     env_file: .env.local
+  #     ports:
+  #         - 8084:8000
+  #     volumes:
+  #         - ./rtapi/src:/app
+  #     depends_on:
+  #         - redis
+  #         - db
+  #         - poller
+  #     command: ["python", "server.py"]
 
-    # rtapi:
-    #     build: ./rtapi
-    #     env_file: .env.local
-    #     ports:
-    #         - 8084:8000
-    #     volumes:
-    #         - ./rtapi/src:/app
-    #     depends_on:
-    #         - redis
-    #         - db
-    #         - poller
-    #     command: ["python", "server.py"]
+  #    poller:
+  #        build: ./poller
+  #        volumes:
+  #            - ./poller:/go/src/app
+  #        depends_on:
+  #            - db
+  #            - redis
+  #        env_file: .env.local
+  #        command: tail -f /dev/null
 
-#    poller:
-#        build: ./poller
-#        volumes:
-#            - ./poller:/go/src/app
-#        depends_on:
-#            - db
-#            - redis
-#        env_file: .env.local
-#        command: tail -f /dev/null
+  cache:
+    image: memcached:alpine
 
-    cache:
-        image: memcached:alpine
-
-    redis:
-        image: redis
+  redis:
+    image: redis
 
 volumes:
-    db_dev:
-    api_uwsgispooler_dev:
-    api_uwsgilog_dev:
-    web_uwsgispooler_dev:
-    web_uwsgilog_dev:
-    web_static:
-    web_media:
+  ? db_dev
+  ? api_uwsgispooler_dev
+  ? api_uwsgilog_dev
+  ? web_uwsgispooler_dev
+  ? web_uwsgilog_dev
+  ? web_static
+  ? web_media
