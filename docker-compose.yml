@@ -50,27 +50,27 @@ services:
       - "5432:5432"
 
   # rtapi:
-  #     build: ./rtapi
-  #     env_file: .env.local
-  #     ports:
-  #         - 8084:8000
-  #     volumes:
-  #         - ./rtapi/src:/app
-  #     depends_on:
-  #         - redis
-  #         - db
-  #         - poller
-  #     command: ["python", "server.py"]
+  #   build: ./rtapi
+  #   env_file: .env.local
+  #   ports:
+  #     - 8084:8000
+  #   volumes:
+  #     - ./rtapi/src:/app
+  #   depends_on:
+  #     - redis
+  #     - db
+  #     - poller
+  #   command: ["python", "server.py"]
 
-  #    poller:
-  #        build: ./poller
-  #        volumes:
-  #            - ./poller:/go/src/app
-  #        depends_on:
-  #            - db
-  #            - redis
-  #        env_file: .env.local
-  #        command: tail -f /dev/null
+  # poller:
+  #   build: ./poller
+  #   volumes:
+  #     - ./poller:/go/src/app
+  #   depends_on:
+  #     - db
+  #     - redis
+  #   env_file: .env.local
+  #   command: tail -f /dev/null
 
   cache:
     image: memcached:alpine
