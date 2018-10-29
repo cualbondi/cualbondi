@@ -64,7 +64,7 @@ services:
             - kernel.shmmax=4294967296
             - kernel.shmall=4194304
             #- vm.nr_hugepages=6000 # not namespaced must be set outside docker
-        command: postgres -c shared_buffers=2GB -c work_mem=128MB -c statement_timeout=30000 -c max_parallel_workers_per_gather=4 -c max_worker_processes=16
+        command: postgres -c shared_buffers=2GB -c work_mem=128MB -c statement_timeout=300000 -c max_parallel_workers_per_gather=4 -c max_worker_processes=16
 
     cache:
         image: memcached:alpine
