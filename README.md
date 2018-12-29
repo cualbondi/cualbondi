@@ -35,7 +35,7 @@ Para updatear los subrepos
 
 3. Correr migraciones de django
 
-    `docker-compose exec apiv3 python manage.py migrate`
+    `docker-compose exec web python3 manage.py migrate`
 
 ## Para hacer funcionar sentry (Sólo production environments)
 
