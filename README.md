@@ -51,3 +51,7 @@ Para updatear los subrepos
 ## Generar dump de BD
 
 `docker-compose exec --user postgres db bash export-sql.sh | gzip > dump-$(date --utc +%Y%m%d_%H%M%SZ).sql.gz`
+
+
+## Abrir la app
+https://localhost:8083/mapa
