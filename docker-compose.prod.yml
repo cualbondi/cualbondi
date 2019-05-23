@@ -48,7 +48,7 @@ services:
       cap_add:
         - SYS_ADMIN
       #command: tail -f /dev/null
-      command: bash -c "yarn && yarn build"
+      command: bash -c "npm i && npm run build"
       user: root
       working_dir: /src
       volumes:
