@@ -37,6 +37,9 @@ Para updatear los subrepos
 
     `docker-compose exec web python3 manage.py migrate`
 
+#### Error en la migracion `social_django.0004_auto_20160423_0400`: `KeyError: ('social_django', 'usersocialauth')`
+ver este [link](https://github.com/python-social-auth/social-app-django/issues/28#issuecomment-294574806)
+
 ## Para hacer funcionar sentry (Sólo production environments)
 
     docker exec -it sentry_sentry_1 sentry upgrade
