@@ -26,6 +26,30 @@ services:
       - 8080:8000
     command: ["/start.sh"]
 
+  
+  airflow:
+    image: puckel/docker-airflow:1.10.3
+    restart: always
+    env_file: .env.local
+    depends_on:
+        - db
+    environment:
+        - LOAD_EX=n
+        - EXECUTOR=Local
+    volumes:
+        - ./web:/usr/local/airflow/dags
+        # Uncomment to include custom plugins
+        # - ./plugins:/usr/local/airflow/plugins
+    ports:
+        - "8085:8080" # airflow dashboard
+        # - "8086:5555" # flower dashboard
+    command: webserver
+    healthcheck:
+        test: ["CMD-SHELL", "[ -f /usr/local/airflow/airflow-webserver.pid ]"]
+        interval: 30s
+        timeout: 30s
+        retries: 3
+
   # notebooks:
   #     build:
   #         context: ./web
