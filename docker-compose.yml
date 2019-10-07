@@ -26,30 +26,6 @@ services:
       - 8080:8000
     command: ["/start.sh"]
 
-  
-  airflow:
-    image: puckel/docker-airflow:1.10.3
-    restart: always
-    env_file: .env.local
-    depends_on:
-        - db
-    environment:
-        - LOAD_EX=n
-        - EXECUTOR=Local
-    volumes:
-        - ./web:/usr/local/airflow/dags
-        # Uncomment to include custom plugins
-        # - ./plugins:/usr/local/airflow/plugins
-    ports:
-        - "8085:8080" # airflow dashboard
-        # - "8086:5555" # flower dashboard
-    command: webserver
-    healthcheck:
-        test: ["CMD-SHELL", "[ -f /usr/local/airflow/airflow-webserver.pid ]"]
-        interval: 30s
-        timeout: 30s
-        retries: 3
-
   # notebooks:
   #     build:
   #         context: ./web
@@ -72,6 +48,19 @@ services:
     #add this if you need to connect to psql from outside
     ports:
       - "5432:5432"
+
+  dask-scheduler:
+    image: daskdev/dask
+    hostname: dask-scheduler
+    ports:
+      - "8786:8786" # scheduler
+      - "8787:8787" # web interface
+    command: ["dask-scheduler"]
+
+  dask-worker:
+    image: daskdev/dask
+    hostname: dask-worker
+    command: ["dask-worker", "tcp://dask-scheduler:8786"]
 
   # rtapi:
   #   build: ./rtapi
@@ -103,10 +92,10 @@ services:
     image: redis
 
 volumes:
-  ? db_dev
-  ? api_uwsgispooler_dev
-  ? api_uwsgilog_dev
-  ? web_uwsgispooler_dev
-  ? web_uwsgilog_dev
-  ? web_static
-  ? web_media
+  db_dev:
+  api_uwsgispooler_dev:
+  api_uwsgilog_dev:
+  web_uwsgispooler_dev:
+  web_uwsgilog_dev:
+  web_static:
+  web_media:
