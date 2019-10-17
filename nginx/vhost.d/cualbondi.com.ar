@@ -8,6 +8,15 @@ location /.well-known/acme-challenge/ {
     break;
 }
 
+location ^~ /.well-known {
+    default_type application/json;
+    allow all;
+    auth_basic off;
+    root /usr/share/nginx/html;
+    try_files $uri =404;
+    break;
+}
+
 location /static {
   expires 1h;
   alias /www/static;
