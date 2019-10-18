@@ -80,6 +80,7 @@ services:
             - /var/run/docker.sock:/tmp/docker.sock
             - ./nginx/vhost.d:/etc/nginx/vhost.d
             - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+            - ./nginx/assetlinks.json:/usr/share/nginx/html/.well-known/assetlinks.json
             - ./volume_nginx/logs:/var/log/nginx
             - ./volume_nginx/html:/usr/share/nginx/html
             - ./volume_nginx/certificates:/etc/nginx/certs

@@ -23,3 +23,8 @@
 	url = git@github.com:cualbondi/poller.git
 	branch = master
 	ignore = all
+[submodule "android-app"]
+	path = android-app
+	url = git@github.com:cualbondi/android-app.git
+	branch = master
+	ignore = all
