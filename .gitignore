@@ -13,3 +13,5 @@ nginx/certificates
 nginx/html
 nginx/logs
 .env.example
+/media
+/upgradepg-*
