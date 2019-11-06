@@ -44,7 +44,7 @@ services:
     build: ./postgres
     env_file: .env.local
     volumes:
-      - dev_db:/var/lib/postgresql/data
+      - db_dev:/var/lib/postgresql/data
     #add this if you need to connect to psql from outside
     ports:
       - "5432:5432"
