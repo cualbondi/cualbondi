@@ -59,7 +59,7 @@ services:
         restart: always
         env_file: .env
         volumes:
-            - ./volume_db_11:/var/lib/postgresql/data
+            - ./volume_db_12:/var/lib/postgresql/data
         sysctls:
             - kernel.shmmax=4294967296
             - kernel.shmall=4194304
