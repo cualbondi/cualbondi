@@ -20,7 +20,7 @@ services:
         volumes:
             - ./volume_web_media:/app/apps/media
             - ./volume_web_static:/app/staticfiles
-        command: /gunicorn.sh
+        command: /uvicorn.sh
 
     notebooks:
         build:
