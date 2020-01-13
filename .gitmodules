@@ -28,3 +28,9 @@
 	url = git@github.com:cualbondi/android-app.git
 	branch = master
 	ignore = all
+[submodule "osm-static-maps"]
+	path = osm-static-maps
+	url = git@github.com:jperelli/osm-static-maps.git
+        branch = master
+        ignore = all
+

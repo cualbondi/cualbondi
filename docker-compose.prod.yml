@@ -22,6 +22,26 @@ services:
             - ./volume_web_static:/app/staticfiles
         command: /uvicorn.sh
 
+    osm-static-maps:
+        build: ./osm-static-maps
+        restart: always
+        ports:
+            - 3000:3000
+        volumes:
+            - ./osm-static-maps:/app
+
+    web-buscador:
+        image: alekzonder/puppeteer:latest
+        shm_size: 1g
+        cap_add:
+            - SYS_ADMIN
+        # command: tail -f /dev/null
+        command: bash -c "npm i && npm run build"
+        user: root
+        working_dir: /src
+        volumes:
+            - "./web-buscador:/src"
+
     notebooks:
         build:
             context: ./web
@@ -40,19 +60,6 @@ services:
             - ./web/notebooks:/app/notebooks
             - ./volume_notebooks_config.json:/home/django/.jupyter/jupyter_notebook_config.json
         command: ["/notebooks.sh"]
-
-
-    web-buscador:
-      image: alekzonder/puppeteer:latest
-      shm_size: 1g
-      cap_add:
-        - SYS_ADMIN
-      #command: tail -f /dev/null
-      command: bash -c "npm i && npm run build"
-      user: root
-      working_dir: /src
-      volumes:
-        - "./web-buscador:/src"
 
     db:
         build: ./postgres

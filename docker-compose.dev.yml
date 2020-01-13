@@ -1,14 +1,6 @@
 version: "3.2"
 
 services:
-  web-buscador:
-    build: ./web-buscador
-    ports:
-      - 8083:8080
-    volumes:
-      - ./web-buscador/src:/app/src
-    environment:
-      - HOST_PORT=8083
 
   web:
     build:
@@ -25,6 +17,22 @@ services:
     ports:
       - 8080:8000
     command: ["/start.sh"]
+
+  osm-static-maps:
+    build: ./osm-static-maps
+    ports:
+      - 3000:3000
+    volumes:
+      - ./osm-static-maps:/app
+
+  web-buscador:
+    build: ./web-buscador
+    ports:
+      - 8083:8080
+    volumes:
+      - ./web-buscador/src:/app/src
+    environment:
+      - HOST_PORT=8083
 
   # notebooks:
   #     build:
