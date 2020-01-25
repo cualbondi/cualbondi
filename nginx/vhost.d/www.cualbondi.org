@@ -1,0 +1,20 @@
+## Start of configuration add by letsencrypt container
+location /.well-known/acme-challenge/ {
+    default_type "text/plain";
+    auth_basic off;
+    allow all;
+    root /usr/share/nginx/html;
+    try_files $uri =404;
+    break;
+}
+
+return 301 https://cualbondi.org$request_uri;
+
+## End of configuration add by letsencrypt container
+# Tunning API 
+# docs: https://github.com/jwilder/nginx-proxy#per-virtual_host
+
+
+
+
+
