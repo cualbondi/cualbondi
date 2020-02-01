@@ -13,8 +13,8 @@ services:
         environment:
             DJANGO_SETTINGS_MODULE: config.settings.production
             VIRTUAL_PORT: 8000
-            VIRTUAL_HOST: cualbondi.com.ar,api3.cualbondi.com.ar,api.cualbondi.com.ar,www.cualbondi.com.ar
-            LETSENCRYPT_HOST: cualbondi.com.ar,api3.cualbondi.com.ar,api.cualbondi.com.ar,www.cualbondi.com.ar
+            VIRTUAL_HOST: cualbondi.org,api.cualbondi.org,cualbondi.com.ar,api3.cualbondi.com.ar,api.cualbondi.com.ar,www.cualbondi.com.ar
+            LETSENCRYPT_HOST: cualbondi.org,api.cualbondi.org,cualbondi.com.ar,api3.cualbondi.com.ar,api.cualbondi.com.ar,www.cualbondi.com.ar
             LETSENCRYPT_EMAIL: cualbondi@cualbondi.com.ar
         env_file: .env
         volumes:
@@ -85,8 +85,8 @@ services:
             - ./volume_openmaptiles_data:/data
         environment:
             VIRTUAL_PORT: 80
-            VIRTUAL_HOST: tiles.cualbondi.com.ar
-            LETSENCRYPT_HOST: tiles.cualbondi.com.ar
+            VIRTUAL_HOST: tiles.cualbondi.org,tiles.cualbondi.com.ar
+            LETSENCRYPT_HOST: tiles.cualbondi.org,tiles.cualbondi.com.ar
             LETSENCRYPT_EMAIL: cualbondi@cualbondi.com.ar
 
 

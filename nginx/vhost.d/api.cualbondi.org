@@ -1,0 +1,32 @@
+## Start of configuration add by letsencrypt container
+location /.well-known/acme-challenge/ {
+    default_type "text/plain";
+    auth_basic off;
+    allow all;
+    root /usr/share/nginx/html;
+    try_files $uri =404;
+    break;
+}
+
+
+location /static {
+  expires 1h;
+  alias /www/static;
+}
+
+location /media {
+  expires 1h;
+  alias /www/media;
+}
+
+location /v3/ {
+  proxy_pass http://cualbondi.org$request_uri;
+  proxy_set_header Host $host;
+  proxy_set_header X-Real-IP $remote_addr;
+  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+  proxy_set_header X-Forwarded-Proto $scheme;
+}
+
+## End of configuration add by letsencrypt container
+# Tunning API 
+# docs: https://github.com/jwilder/nginx-proxy#per-virtual_host
